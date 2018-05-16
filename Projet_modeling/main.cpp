@@ -71,34 +71,16 @@ void star(MeshQuad& m)
     {
         float f = 1 - 0.05*i;
         float d = -0.1*i;
+        for(unsigned int j = 0; j<21; j+=4)
+        {
+            m.extrude_quad(j);
 
-        m.extrude_quad(0);
-        m.extrude_quad(4);
-        m.extrude_quad(8);
-        m.extrude_quad(12);
-        m.extrude_quad(16);
-        m.extrude_quad(20);
+            m.decale_quad(j,d);
 
-        m.decale_quad(0,d);
-        m.decale_quad(4,d);
-        m.decale_quad(8,d);
-        m.decale_quad(12,d);
-        m.decale_quad(16,d);
-        m.decale_quad(20,d);
+            m.shrink_quad(j,f);
 
-        m.shrink_quad(0,f);
-        m.shrink_quad(4,f);
-        m.shrink_quad(8,f);
-        m.shrink_quad(12,f);
-        m.shrink_quad(16,f);
-        m.shrink_quad(20,f);
-
-        m.tourne_quad(0,12);
-        m.tourne_quad(4,12);
-        m.tourne_quad(8,12);
-        m.tourne_quad(12,12);
-        m.tourne_quad(16,12);
-        m.tourne_quad(20,12);
+            m.tourne_quad(j,12);
+        }
     }
 }
 
@@ -166,21 +148,24 @@ void rec(MeshQuad& m, int quad)
 }
 
 
-void recursif(MeshQuad& m)
+void recursif(MeshQuad& m,int q, int h_c, int h_max)
 {
-
-    m.create_cube();
-
-    for(int i = 0; i < 1; i++)
+    int qface = q;
+    int size = 0;
+    if(h_c < h_max)
     {
-        rec(m,0);
-        rec(m,4);
-//        rec(m,8);
-//        rec(m,12);
-//        rec(m,16);
-//        rec(m,20);
+        m.extrude_quad(qface);
+        m.shrink_quad(qface,0.5f);
+        m.extrude_quad(qface);
+        m.decale_quad(qface,1.2f);
+        m.extrude_quad(qface);
+        size = m.nb_quads()*4;
+        recursif(m,qface,h_c+1,h_max);
+        recursif(m,size-4,h_c+1,h_max);
+        recursif(m,size-8,h_c+1,h_max);
+        recursif(m,size-12,h_c+1,h_max);
+        recursif(m,size-16,h_c+1,h_max);
     }
-
 }
 
 
@@ -277,7 +262,8 @@ int main(int argc, char *argv[])
                     spirale_mesh(mesh);
 				break;
             case Qt::Key_R:
-                recursif(mesh);
+                mesh.create_cube();
+                recursif(mesh,0,0,5);
                 break;
 
 			default:
