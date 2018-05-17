@@ -108,45 +108,6 @@ void spirale_mesh(MeshQuad& m)
     }
 }
 
-void rec(MeshQuad& m, int quad)
-{
-
-    int q0 = quad;
-    int q4 = quad+4;
-    int q8 = quad+8;
-    int q12 = quad+12;
-    int q16 = quad+16;
-    int q20 = quad+20;
-
-    m.extrude_quad(q0);
-    m.extrude_quad(q4);
-    m.extrude_quad(q8);
-    m.extrude_quad(q12);
-    m.extrude_quad(q16);
-    m.extrude_quad(q20);
-
-//    m.shrink_quad(q0,0.5f);
-//    m.shrink_quad(q4,0.5f);
-//    m.shrink_quad(q8,0.5f);
-//    m.shrink_quad(q12,0.5f);
-//    m.shrink_quad(q16,0.5f);
-//    m.shrink_quad(q20,0.5f);
-
-//    m.extrude_quad(q0);
-//    m.extrude_quad(q4);
-//    m.extrude_quad(q8);
-//    m.extrude_quad(q12);
-//    m.extrude_quad(q16);
-//    m.extrude_quad(q20);
-
-//    m.decale_quad(q0,1);
-//    m.decale_quad(q4,1);
-//    m.decale_quad(q8,1);
-//    m.decale_quad(q12,1);
-//    m.decale_quad(q16,1);
-//    m.decale_quad(q20,1);
-}
-
 
 void recursif(MeshQuad& m,int q, int h_c, int h_max)
 {
@@ -211,27 +172,42 @@ int main(int argc, char *argv[])
 				break;
 
             case Qt::Key_E:
-                if(selected_quad != -1)
+                if(selected_quad != -1)   
+                {
                     mesh.extrude_quad(selected_quad);
+                    mesh.gl_update();
+                }
                 break;
 
             case Qt::Key_Up:
                 if(selected_quad != -1)
+                {
                     mesh.decale_quad(selected_quad,1.0f);
+                    mesh.gl_update();
+                }
                 break;
 
             case Qt::Key_Down:
                 if(selected_quad != -1)
+                {
                     mesh.decale_quad(selected_quad,-1.0f);
+                    mesh.gl_update();
+                }
                 break;
 
             case Qt::Key_Z:
                 if(selected_quad != -1)
                 {
                     if(mod & Qt::ShiftModifier)
+                    {
                         mesh.shrink_quad(selected_quad,2.0f);
+                        mesh.gl_update();
+                    }
                     else
+                    {
                         mesh.shrink_quad(selected_quad,0.5f);
+                        mesh.gl_update();
+                    }
                 }
 
                 break;
@@ -240,9 +216,15 @@ int main(int argc, char *argv[])
                 if(selected_quad != -1)
                 {
                     if(mod & Qt::ShiftModifier)
+                    {
                         mesh.tourne_quad(selected_quad,1.0f);
+                        mesh.gl_update();
+                    }
                     else
+                    {
                         mesh.tourne_quad(selected_quad,-1.0f);
+                        mesh.gl_update();
+                    }
                 }
 
                 break;
@@ -257,13 +239,20 @@ int main(int argc, char *argv[])
 			// generation d'objet
 			case Qt::Key_S:
                 if(mod & Qt::ShiftModifier)
+                {
                     star(mesh);
+                    mesh.gl_update();
+                }
                 else
+                {
                     spirale_mesh(mesh);
+                    mesh.gl_update();
+                }
 				break;
             case Qt::Key_R:
                 mesh.create_cube();
-                recursif(mesh,0,0,5);
+                recursif(mesh,0,0,8);
+                mesh.gl_update();
                 break;
 
 			default:

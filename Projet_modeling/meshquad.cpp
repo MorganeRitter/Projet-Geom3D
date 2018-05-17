@@ -432,7 +432,7 @@ void MeshQuad::extrude_quad(int q)
     add_quad(n3,quad3,quad4,n4); //+12
     add_quad(n1,quad1,quad2,n2); //+16
 
-   gl_update();
+   //gl_update();
 }
 
 void MeshQuad::transfo_quad(int q, const glm::mat4& tr)
@@ -452,8 +452,16 @@ void MeshQuad::transfo_quad(int q, const glm::mat4& tr)
 
 	// generation de la matrice de transfo globale:
 	// indice utilisation de glm::inverse() et de local_frame
-
     Mat4 local = local_frame(q);
+
+    float det = glm::determinant(local);
+    if(det == 0)
+    {
+        std::cerr << "Erreur déterminant égale à 0 (quad n°" <<q<< ")"<<std::endl;
+        return;
+    }
+
+
     Mat4 transfo =local*tr*glm::inverse(local);
 
 	// Application au 4 points du quad
@@ -469,21 +477,21 @@ void MeshQuad::decale_quad(int q, float d)
 
     Mat4 transfo = translate(0,0,d);
     transfo_quad(q,transfo);
-    gl_update();
+    //gl_update();
 }
 
 void MeshQuad::shrink_quad(int q, float s)
 {
     Mat4 transfo = scale(s);
     transfo_quad(q,transfo);
-    gl_update();
+    //gl_update();
 }
 
 void MeshQuad::tourne_quad(int q, float a)
 {
     Mat4 transfo = rotateZ(a);
     transfo_quad(q,transfo);
-    gl_update();
+    //gl_update();
 }
 
 
