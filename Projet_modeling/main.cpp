@@ -229,13 +229,6 @@ int main(int argc, char *argv[])
 
                 break;
 
-			// e extrusion
-			// +/- decale
-			// z/Z shrink
-			// t/T tourne
-
-			// Attention au cas m_selected_quad == -1
-
 			// generation d'objet
 			case Qt::Key_S:
                 if(mod & Qt::ShiftModifier)

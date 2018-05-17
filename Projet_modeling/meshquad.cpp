@@ -261,6 +261,8 @@ bool MeshQuad::intersect_ray_quad(const Vec3& P, const Vec3& Dir, int q, Vec3& i
 
     float t = (d-vec_dot(P,normal))/(vec_dot(Dir,normal));
 
+
+    //Si pas d'intersection
     if( t == INFINITY)
         return false;
 	// alpha => calcul de I
@@ -330,7 +332,6 @@ Mat4 MeshQuad::local_frame(int q)
     les trois premieres colones: X,Y,Z locaux
     la derniere colonne l'origine du repere
     -> Mat4 = Vec4 X + Vec4 Y + Vec4 Z + Vec4 O
-    ici Z = N et X = AB
     Origine le centre de la face
     longueur des axes : [AB]/2
     */
